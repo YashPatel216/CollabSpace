@@ -18,10 +18,26 @@ app.get('/',(req,res)=>{
 
 
 
-app.listen(ENV.PORT,()=>console.log("Server Started"),
-    connectDB()
-)
 
+
+const startserver = async ()=>{
+    try{
+        await connectDB();
+        if(ENV.NODE_ENV ==="development"){
+            app.listen(ENV.PORT,()=>console.log("Server Started"),
+              connectDB()
+        )
+        }
+    }catch(error){
+            console.log("Error in connecting to server",error)
+            process.exit(1)
+    }
+}
+
+startserver()
+
+
+export default app;
 
 
 // tilvatirth123_db_user

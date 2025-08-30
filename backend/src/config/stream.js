@@ -9,9 +9,9 @@ export const upsertstreamuser=async(userdata)=>{
         console.log("Stream user upserted seccessfully",userdata.name)
         return userdata
     }
-    catch(error){
-        console.log("Error Upserting stream user",error)
-    }
+  catch(error){
+  console.error("Error Upserting stream user", error.response?.data || error.message)
+}
 }
 
 export const deletestreamuser=async(userId)=>{

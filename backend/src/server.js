@@ -4,26 +4,26 @@ import connectDB from './config/db.js';
 import {clerkMiddleware} from '@clerk/express'
 import { functions, inngest } from './config/inngest.js'
 import { serve } from "inngest/express";
+import chatRoutes from "./routes/chat.route.js"
+
 const app=express()
 
-app.use(clerkMiddleware());
+app.use(clerkMiddleware());  // req.auth will be available in the request object
 
 app.use(express.json())
-app.use("/api/inngest", serve({ client: inngest, functions
- }));
+app.use("/api/inngest", serve({ client: inngest, functions}));
+
+ app.use("/api/chat",chatRoutes);
+
 app.get('/',(req,res)=>{
     res.send("hello")
 })
-
-// console.log(ENV.MONGO_URI)
-
-
 
 
 
 const startserver = async ()=>{
     try{
-        await connectDB();
+        // await connectDB();
         if(ENV.NODE_ENV ==="development"){
             app.listen(ENV.PORT,()=>console.log("Server Started"),
               connectDB()

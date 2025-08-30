@@ -10,7 +10,7 @@ export const upsertstreamuser=async(userdata)=>{
         return userdata
     }
     catch(error){
-        console.log("Error Upserting stream user",userdata.name)
+        console.log("Error Upserting stream user",error)
     }
 }
 
@@ -18,10 +18,10 @@ export const deletestreamuser=async(userId)=>{
     try{
         await streamClient.deleteUser(userId)
         console.log("Stream user Deleted seccessfully",userId)
-        return userdata
+        return userId
     }
     catch(error){
-        console.log("Error Deleting stream user",userdata.name)
+        console.log("Error Deleting stream user",error)
     }
 }
 
@@ -31,7 +31,7 @@ export const generateStreamToken=async(userId)=>{
        return streamClient.createToken(userIdString);
     }
     catch(error){
-        console.log("Error Deleting stream token",userdata.name)
+        console.log("Error Generating stream token",error)
         return null;
     }
 }

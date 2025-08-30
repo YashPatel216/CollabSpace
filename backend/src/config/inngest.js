@@ -1,6 +1,8 @@
 import { Inngest } from "inngest";
 import connectDB from "./db.js";
 import User from "../models/user.model.js";
+import { StreamChat } from "stream-chat";
+import { deletestreamuser, upsertstreamuser } from "./stream.js";
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "CollabSpace" });
@@ -23,7 +25,13 @@ const syncUser = inngest.createFunction(
     };
 
     await User.create(newUser);
-    return { success: true };
+
+    await upsertstreamuser({
+        id:newUser.clerkId.toString(),
+        name:newUser.name,
+        image:newUser.image,
+    })
+  // return { deleted: true };
   }
 );
 
@@ -37,7 +45,9 @@ const deleteUserFromDB = inngest.createFunction(
     await connectDB();
     const { id } = event.data;
     await User.deleteOne({ clerkId: id });
-    return { deleted: true };
+
+    await deletestreamuser(id.toString())
+    // return { deleted: true };
   }
 );
 

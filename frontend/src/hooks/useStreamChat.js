@@ -1,21 +1,19 @@
 import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamtoken } from "../lib/api";
-import { useEffect } from "react";
-
-
-
+import { useEffect ,useState} from "react";
+import { StreamChat } from "stream-chat";
 
 const STREAM_API_KEY=import.meta.env.VITE_STREAM_API_KEY;
 
 export const useStreamChat=()=>{
-    const{user}=useUser;
-    const{chatClient,setChatClient}=useState(null)
+    const{user}=useUser();
+    const[chatClient,setChatClient]=useState(null)
 
 
     //fetch stream token using react-query
 
-    const{data:tokenData , isLoading:tokenLoading,error:tokenError}=useQuery({
+    const{data:tokenData , isLoading,error}=useQuery({
         queryKey:["streamkey"],
         queryFn:getStreamtoken,
         enabled:!!user?.id,  //take object and convert it into boolean

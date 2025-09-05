@@ -88,8 +88,9 @@ useState(()=>{
             const channelId = channelName
             .toLowerCase()
             .trim()
-            .replace(/s+/g, "-")
-            .replace(/[^a-z0-9_-]/g, "")
+            .replace(/\s+/g, "-")        
+            .replace(/[^a-z0-9_-]/g, "") 
+
             .slice(0,20)
 
 
@@ -132,7 +133,65 @@ useState(()=>{
                     <XIcon className="w-5 h-5" />
                 </button>
             </div>
+
+            <form action={handleSubmit} className="create-channel-modal__form" >
+                {
+                    error && (
+                        <div className="form-error">
+                            <AlertCircleIcon className="w-4 h-4 "/>
+                            <span>{error}</span>
+                        </div>
+                    )
+                }
+
+                <div className="form-group">
+                    <label htmlFor="channel-name">Channel Name</label>
+                    <div className="input-icon-wrapper">
+                    <HashIcon className="input-icon" />
+                    <input type="text" 
+                        id="channel-name" 
+                        value={channelName} 
+                        onChange={handleChannelNameChange} 
+                        placeholder="Enter channel name" 
+                        className={`form-input ${error ? "input-error" : ""}`}
+                        autoFocus
+                        maxLength={22} 
+                    />
+                    </div>
+                   
+                    {channelName && (
+                        <div className="form-hint">
+                            {
+                                channelName
+                                .toLowerCase()
+                                .replace(/\s+/g, "-")        
+                                .replace(/[^a-z0-9_-]/g, "") 
+                            }
+                            </div>
+                    )}
+                </div>
+                <div className="form-group">
+                    <label> Channel Type</label>
+                    <div className="radio-group">
+                        <label className="radio-option">
+                            <input
+                                type="radio"
+                                value="private"
+                                checked={channelType === "public"}
+                                onChange={() => setChannelType(e.target.value)}
+                            />
+                            <div className="radio-content">
+                                <HashIcon className="w-5 h-5" />
+                                <div>
+                                    <div className="radio-title">Public</div>
+                                    <div className="radio-description">Anyone can join this channel</div>
+                                </div>
+                    </div>
+                    </label>
+                    </div>
+                    </div>
+                </form>
+        </div>  
         </div>
-        </div>)
-}
+)}
 export default CreateChannelModal;

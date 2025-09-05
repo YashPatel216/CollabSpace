@@ -5,7 +5,7 @@ import { useChatContext } from "stream-chat-react";
 import toast from "react-hot-toast";
 import { AlertCircleIcon, HashIcon, LockIcon, UsersIcon, XIcon } from "lucide-react";
 
-const CreateChannelModal = ({ onClose }) => {
+const CreateChannelModal = ({isopen,onclose }) => {
   const [channelName, setChannelName] = useState("");
   const [channelType, setChannelType] = useState("public");
   const [description, setDescription] = useState("");
@@ -45,6 +45,21 @@ useState(()=>{
         fetchuser()
 },[client])
 
+//reset the form on open
+    useEffect(() => {
+        setChannelName("");
+        setDescription("");
+        setChannelType("public");
+        setError("");
+        setSelectedMembers([]);
+           
+    },[] )
+
+    useEffect(() => {
+        if (channelType === "public") setSelectedMembers(users.map((u) => u.id));
+        else setSelectedMembers([]);
+    },[channelType, users]);
+
   const validateChannelName = (name) => {
     if (!name.trim()) return "Channel name is required";
     if (name.length < 3) return "Channel name must be at least 3 characters";
@@ -52,9 +67,72 @@ useState(()=>{
 
     return "";
   };
+    const handleChannelNameChange =(e)=>{
+        const value =e.target.value;
+        setChannelName(value);
+        setError(validateChannelName(value));
+    };
+    const handlesubmit=async (e)=>{
+        e.preventdefault();
+        const validationError=validateChannelName(channelName);
+        if(validationError){
+            return setError(validationError);
+        }
+        if (isCreating || !client.user)
+        {
+            return;
+        }
+        setIsCreating(true)
+        setError("")
+        try{
+            const channelId = channelName
+            .toLowerCase()
+            .trim()
+            .replace(/s+/g, "-")
+            .replace(/[^a-z0-9_-]/g, "")
+            .slice(0,20)
 
-    return(<div>
-            CreateChannelModel
+
+            const channelData ={
+                name:channelName.trim(), 
+                created_by_id:client.user.id,
+                members:[client.user.id,...selectedMembers],
+            };  
+            if (description) channelData.description = description;
+
+            if(channelType === "private")
+            {
+                channelData.private = true;
+                channelData.visibility = "private";
+            }
+            else{
+                channelData.visibility = "public";
+                channelData.discoverable =true;
+            }
+            const channel = client.channel("messaging", channelId, channelData);
+        await channel.watch();
+        setActiveChannel(channel);
+        setSearchParams({ channel: channelId });
+
+        toast.success(`Channel #${channelName} created successfully`);
+        onclose();
+        }
+        catch(error){  
+            console.log("Error creating channel",error)
+          }
+          finally{
+            setIsCreating(false);
+          }
+    };
+    return(<div className="create-channel-modal-overlay">
+        <div className="create-channel-modal">
+            <div className="create-channel-modal__header">
+                <h2>Create a channel</h2>
+                <button onClick={onclose} className="create-channel-modal__close" >
+                    <XIcon className="w-5 h-5" />
+                </button>
+            </div>
+        </div>
         </div>)
 }
 export default CreateChannelModal;

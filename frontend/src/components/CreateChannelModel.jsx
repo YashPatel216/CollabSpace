@@ -5,7 +5,7 @@ import { useChatContext } from "stream-chat-react";
 import toast from "react-hot-toast";
 import { AlertCircleIcon, HashIcon, LockIcon, UsersIcon, XIcon } from "lucide-react";
 
-const CreateChannelModal = ({isopen,onclose }) => {
+const CreateChannelModal = ({isopen,onClose }) => {
   const [channelName, setChannelName] = useState("");
   const [channelType, setChannelType] = useState("public");
   const [description, setDescription] = useState("");
@@ -116,7 +116,7 @@ useState(()=>{
         setSearchParams({ channel: channelId });
 
         toast.success(`Channel #${channelName} created successfully`);
-        onclose();
+        onClose();
         }
         catch(error){  
             console.log("Error creating channel",error)
@@ -129,12 +129,12 @@ useState(()=>{
         <div className="create-channel-modal">
             <div className="create-channel-modal__header">
                 <h2>Create a channel</h2>
-                <button onClick={onclose} className="create-channel-modal__close" >
+                <button onClick={onClose} className="create-channel-modal__close" >
                     <XIcon className="w-5 h-5" />
                 </button>
             </div>
 
-            <form action={handleSubmit} className="create-channel-modal__form" >
+            <form action={handlesubmit} className="create-channel-modal__form" >
                 {
                     error && (
                         <div className="form-error">

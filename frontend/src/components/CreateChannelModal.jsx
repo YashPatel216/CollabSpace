@@ -23,7 +23,7 @@ const CreateChannelModal = ({onClose }) => {
 useState(()=>{
 
     const fetchuser=async ()=>{
-        if(!client.user) return;
+        if(!client?.user) return;
         setLoadingUsers(true);
 
         try{
@@ -31,7 +31,7 @@ useState(()=>{
                 {name:1},
                 {limit:100},
 
-            )
+            );
             setUsers(response.users || [])
         }
         catch(error){
@@ -42,7 +42,7 @@ useState(()=>{
             setLoadingUsers(false)
         }
     }
-        fetchUsers()
+        fetchuser()
 },[client])
 
 //reset the form on open

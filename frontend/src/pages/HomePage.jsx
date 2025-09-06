@@ -72,9 +72,9 @@
                 <ChannelList 
                   filters={{members: {$in: [chatClient?.user?.id]}}}
                   options={{state: true, watch: true}}
-                  Preview={(channel)=>(
+                  Preview={(props)=>(
                     <CustomChannelPreview
-                      channel={channel}
+                      channel={props.channel}
                       activeChannel={activeChannel}
                       setActiveChannel={(channel)=>setSearchParams({ channel : channel.id})}
 

@@ -54,10 +54,10 @@ export const useStreamChat=()=>{
     connect();
 
     // cleanup
-    return () => {
-      cancelled = true;
-      client.disconnectUser();
-    };
+    // return () => {
+    //   cancelled = true;
+    //   client.disconnectUser();
+    // };
   }, [tokenData?.token, user?.id]);
 
   return { chatClient, isLoading, error };

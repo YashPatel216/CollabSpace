@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
-import { useChatContext } from "stream-chat-react";
+import { useSearchParams } from "react-router-dom";
+import { ButtonWithSubmenu, useChatContext } from "stream-chat-react";
 // import * as Sentry from "@sentry/react";
 import toast from "react-hot-toast";
 import { AlertCircleIcon, HashIcon, LockIcon, UsersIcon, XIcon } from "lucide-react";
@@ -174,23 +174,119 @@ useState(()=>{
                     <label> Channel Type</label>
                     <div className="radio-group">
                         <label className="radio-option">
-                            <input
-                                type="radio"
-                                value="private"
-                                checked={channelType === "public"}
-                                onChange={() => setChannelType(e.target.value)}
-                            />
-                            <div className="radio-content">
-                                <HashIcon className="w-5 h-5" />
-                                <div>
-                                    <div className="radio-title">Public</div>
-                                    <div className="radio-description">Anyone can join this channel</div>
-                                </div>
+                        <input
+                            type="radio"
+                            value="public"
+                            checked={channelType === "public"}
+                            onChange={(e) => setChannelType(e.target.value)}
+                        />
+                        <div className="radio-content">
+                            <HashIcon className="w-5 h-5" />
+                            <div>
+                            <div className="radio-title">Public</div>
+                            <div className="radio-description">Anyone can join this channel</div>
+                            </div>
+                        </div>
+                        </label>
+
+                <label className="radio-option">
+                <input
+                    type="radio"
+                    value="private"
+                    checked={channelType === "private"}
+                    onChange={(e) => setChannelType(e.target.value)}
+                />
+                <div className="radio-content">
+                    <LockIcon className="size-4" />
+                    <div>
+                    <div className="radio-title">Private</div>
+                    <div className="radio-description">Only invited members can join</div>
                     </div>
-                    </label>
-                    </div>
-                    </div>
-                </form>
+                </div>
+                </label>
+            </div>
+            </div>
+{/* add members component */}
+{channelType === "private" && (
+  <div className="form-group">
+    <label>Add Members</label>
+    <div className="member-selection-header">
+      <button
+        type="button"
+        className="btn btn-secondary btn-small"
+        onClick={() => setSelectedMembers(users.map((u) => u.id))}
+        disabled={loadingUsers || users.length === 0}
+      >
+        <UsersIcon className="w-4 h-4" />
+        Select Everyone
+      </button>
+      <span className="selected-count">{selectedMembers.length} selected</span>
+    </div>
+
+    <div className="members-list">
+      {loadingUsers ? (
+        <p>Loading users...</p>
+      ) : users.length === 0 ? (
+        <p>No users found</p>
+      ) : (
+        users.map((user) => (
+          <label key={user.id} className="member-option">
+            <input
+              type="checkbox"
+              checked={selectedMembers.includes(user.id)}
+              onChange={() => handleMemberToggle(user.id)}
+              className="member-checkbox"
+            />
+            {user.image ? (
+              <img
+                src={user.image}
+                alt={user.name || user.id}
+                className="member-avatar"
+              />
+            ) : (
+              <div className="member-avatar member-avatar--placeholder">
+                <span>{(user.name || user.id).charAt(0).toUpperCase()}</span>
+              </div>
+            )}
+            <span className="member-name">{user.name || user.id}</span>
+          </label>
+        ))
+      )}
+    </div>
+  </div>
+)}
+
+
+{/* description */}
+<div className="form-group">
+    <label htmlFor="channel-description">Description (optional)</label>
+    <textarea
+        id="channel-description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Enter channel description"
+        className="form-textarea"
+        rows={3}
+        />
+</div>
+          {/* Actions */}
+            <div className="form-actions">
+                <button
+                    type="button"
+                    onClick={onClose}
+                    className="btn btn-secondary"
+                    disabled={isCreating} >
+                    Cancel
+                </button>
+                <button
+
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={!!error || !channelName.trim() || isCreating}>
+                    {isCreating ? "Creating..." : "Create Channel"}
+                </button>
+            </div>
+        </form>
         </div>  
         </div>
 )}

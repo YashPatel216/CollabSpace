@@ -286,9 +286,6 @@ useState(()=>{
                     {isCreating ? "Creating..." : "Create Channel"}
                 </button>
             </div>
-
-
-
         </form>
         </div>  
         </div>

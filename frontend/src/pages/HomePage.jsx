@@ -3,7 +3,7 @@
   import { useSearchParams } from "react-router-dom";
   import { useStreamChat } from '../hooks/useStreamChat.js'
   import PageLoader from '../components/PageLoader.jsx'
-  import { PlusIcon } from 'lucide-react'
+  import { PlusIcon , HashIcon } from 'lucide-react'
   import CustomChannelPreview from '../components/CustomChannelPreview.jsx'
   import '../styles/stream-chat-theme.css'
 
@@ -84,10 +84,11 @@
                     <div className='channel-sections'> 
                     <div className='section-header'> 
                       <div className='section-title'>
-                        <HashIcon className="size-4" />
+                    <HashIcon className="h-4 w-4" />
                         <span>Channels</span> 
                     </div>
                     </div>
+                    
                     <div className='channel-list'>{children}</div>
                     </div>
                   )}

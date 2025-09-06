@@ -5,7 +5,7 @@ import { ButtonWithSubmenu, useChatContext } from "stream-chat-react";
 import toast from "react-hot-toast";
 import { AlertCircleIcon, HashIcon, LockIcon, UsersIcon, XIcon } from "lucide-react";
 
-const CreateChannelModal = ({isopen,onClose }) => {
+const CreateChannelModal = ({onClose }) => {
   const [channelName, setChannelName] = useState("");
   const [channelType, setChannelType] = useState("public");
   const [description, setDescription] = useState("");
@@ -42,7 +42,7 @@ useState(()=>{
             setLoadingUsers(false)
         }
     }
-        fetchuser()
+        fetchUsers()
 },[client])
 
 //reset the form on open
@@ -73,7 +73,7 @@ useState(()=>{
         setError(validateChannelName(value));
     };
     const handlesubmit=async (e)=>{
-        e.preventdefault();
+        e.preventDefault();
         const validationError=validateChannelName(channelName);
         if(validationError){
             return setError(validationError);
@@ -134,7 +134,7 @@ useState(()=>{
                 </button>
             </div>
 
-            <form action={handlesubmit} className="create-channel-modal__form" >
+            <form onSubmit={handlesubmit} className="create-channel-modal__form" >
                 {
                     error && (
                         <div className="form-error">

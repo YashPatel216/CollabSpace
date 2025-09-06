@@ -8,7 +8,7 @@
   import '../styles/stream-chat-theme.css'
 
   import { Chat, Channel, ChannelList, MessageList, MessageInput, Thread, Window } from "stream-chat-react"
-  import CreateChannelModal from '../components/CreateChannelModel.jsx'
+  import CreateChannelModal from '../components/CreateChannelModal.jsx'
 
   const HomePage = () => {
 
@@ -112,7 +112,7 @@
           </div>
 
           {isCreateModelOpen && (
-            <CreateChannelModal isOpen={isCreateModelOpen}
+            <CreateChannelModal
             onClose={()=>setIsCreateModalOpen(false)}/> 
           )}
         </Chat>
